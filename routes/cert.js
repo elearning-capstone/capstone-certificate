@@ -4,29 +4,37 @@ const router = express.Router();
 const PDFDocument = require("pdfkit");
 const nodemailer = require("nodemailer");
 
+const user_ip = "http://ip-172-31-33-253.ap-southeast-1.compute.internal:3000";
+const course_ip = "http://ip-172-31-36-250.ap-southeast-1.compute.internal:3000";
+
+const senderEmail = "";
+const senderPass = "";
+
+const certImage = __dirname + "/../images/certificate.png";
+const nameFont = __dirname + "/../fonts/KaushanScript-Regular.ttf";
+const desFont = __dirname + "/../fonts/Roboto-Regular.ttf";
+
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: senderEmail,
+      pass: senderPass
+    }
+});
+
 router.get("/", async (req, res) => {
     try {
         const { user_id, course_id } = req.query;
 
-        const certImage = __dirname + "/../images/certificate.png";
-        const nameFont = __dirname + "/../fonts/KaushanScript-Regular.ttf";
-        const desFont = __dirname + "/../fonts/Roboto-Regular.ttf";
+        const user_info = await axios.get(user_ip + "/user/information", { params: { user_id } });
+        const course_info = await axios.get(course_ip + "/course/information", { params: { course_id } });
+        const lecturer_info = await axios.get(user_ip + "/user/information", { params: { user_id: course_info.lecturer_id } });
 
-        // TO DO: get & fill information
-        const email = "";
-        const fullname = "";
-        const coursename = "";
+        const email = user_info.email;
+        const fullname = user_info.fullname;
+        const coursename = course_info.name;
         const description = "for completing the course: \n" + coursename;
-        const lecturer = "";
-        //
-
-        const transporter = nodemailer.createTransport({
-            service: "gmail",
-            auth: {
-              user: "", // TO BE FILLED
-              pass: "" // TO BE FILLED
-            }
-        });
+        const lecturer = lecturer_info.lecturer;
         
         const doc = new PDFDocument({
             layout: "landscape",
@@ -40,7 +48,7 @@ router.get("/", async (req, res) => {
             let pdfData = Buffer.concat(buffers);
 
             const mailOptions = {
-                from: "", // TO BE FILLED
+                from: senderEmail,
                 to: email,
                 subject: "Certificate for Completion",
                 text: "Congratulation for completing the course: "+coursename,
