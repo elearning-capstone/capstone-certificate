@@ -12,17 +12,19 @@ router.get("/", async (req, res) => {
         const nameFont = __dirname + "/../fonts/KaushanScript-Regular.ttf";
         const desFont = __dirname + "/../fonts/Roboto-Regular.ttf";
 
+        // TO DO: get & fill information
         const email = "";
-        const fullname = "user_id " + user_id.toString();
-        const coursename = "How to manage money for the luxury of your cat 101 ";
-        const description = "for completing the course: \n" + coursename + course_id.toString();
-        const lecturer = "Noppanara S.";
+        const fullname = "";
+        const coursename = "";
+        const description = "for completing the course: \n" + coursename;
+        const lecturer = "";
+        //
 
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-              user: "",
-              pass: ""
+              user: "", // TO BE FILLED
+              pass: "" // TO BE FILLED
             }
         });
         
@@ -38,7 +40,7 @@ router.get("/", async (req, res) => {
             let pdfData = Buffer.concat(buffers);
 
             const mailOptions = {
-                from: "",
+                from: "", // TO BE FILLED
                 to: email,
                 subject: "Certificate for Completion",
                 text: "Congratulation for completing the course: "+coursename,
