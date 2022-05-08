@@ -28,13 +28,14 @@ router.get("/", async (req, res) => {
 
         const user_info = await axios.get(user_ip + "/user/information", { params: { user_id } });
         const course_info = await axios.get(course_ip + "/course/information", { params: { course_id } });
-        const lecturer_info = await axios.get(user_ip + "/user/information", { params: { user_id: course_info.lecturer_id } });
-
-        const email = user_info.email;
-        const fullname = user_info.fullname;
-        const coursename = course_info.name;
+        const lecturer_id = (course_info.data.lecturer_id);
+        const lecturer_info = await axios.get(user_ip + "/user/information", { params: { user_id: lecturer_id } });
+        
+        const email = user_info.data.email;
+        const fullname = user_info.data.fullname;
+        const coursename = course_info.data.name;
         const description = "for completing the course: \n" + coursename;
-        const lecturer = lecturer_info.lecturer;
+        const lecturer = lecturer_info.data.fullname;
         
         const doc = new PDFDocument({
             layout: "landscape",
