@@ -38,7 +38,7 @@ router.get("/", async (req, res) => {
             let pdfData = Buffer.concat(buffers);
 
             const mailOptions = {
-                from: "noof3310@gmail.com",
+                from: "",
                 to: email,
                 subject: "Certificate for Completion",
                 text: "Congratulation for completing the course: "+coursename,
