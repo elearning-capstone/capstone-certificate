@@ -20,7 +20,7 @@ app.get("/", (req, res) => {
 app.use("/cert", require("./routes/cert"));
 
 // set port, listen for requests
-const PORT = 3000;
+const PORT = 3001;
 db.sequelize.sync().then((req) => {
     app.listen(PORT, () => console.log(`Backend started on port ${PORT}`))
 });
